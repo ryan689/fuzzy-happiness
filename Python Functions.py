@@ -1,3 +1,5 @@
+print_results = False
+
 """
 WARMUP
 LESSER OF TWO EVENS: Write a function that returns the lesser of two given numbers if both numbers are even,
@@ -9,18 +11,13 @@ lesser_of_two_evens(2,5) --> 5
 
 
 def lesser_of_two_evens(a, b):
-    if a%2 == 0 and b%2 == 0:
-        # both numbers are even
-        return min(a, b)
-    else:
-        # one or both numbers are odd
-        return max(a, b)
+    return None
 
 
-# print(lesser_of_two_evens(4, 9))
-# print(lesser_of_two_evens(7, 91))
-# print(lesser_of_two_evens(16, 26))
-
+if print_results:
+    print(lesser_of_two_evens(4, 9))
+    print(lesser_of_two_evens(7, 91))
+    print(lesser_of_two_evens(16, 26))
 
 """
 ANIMAL CRACKERS: Write a function takes a two-word string and returns True if both words begin with same letter
@@ -31,16 +28,13 @@ animal_crackers('Crazy Kangaroo') --> False
 
 
 def animal_crackers(text):
-    first_word = text.split()[0]
-    second_word = text.split()[1]
-
-    return first_word[0].lower() == second_word[0].lower()
+    return None
 
 
-# print(animal_crackers('Levelheaded Llama'))
-# print(animal_crackers('Crazy Kangaroo'))
-# print(animal_crackers('Six Swans'))
-
+if print_results:
+    print(animal_crackers('Levelheaded Llama'))
+    print(animal_crackers('Crazy Kangaroo'))
+    print(animal_crackers('Six Swans'))
 
 """
 MAKES TWENTY: Given two integers, return True if the sum of the integers is 20 or if one of the integers is 20. 
@@ -53,13 +47,13 @@ makes_twenty(2,3) --> False
 
 
 def makes_twenty(n1, n2):
-    return n1+n2 == 20 or n1 == 20 or n2 == 20
+    return None
 
 
-# print(makes_twenty(20, 10))
-# print(makes_twenty(12, 8))
-# print(makes_twenty(2, 3))
-
+if print_results:
+    print(makes_twenty(20, 10))
+    print(makes_twenty(12, 8))
+    print(makes_twenty(2, 3))
 
 """
 LEVEL 1
@@ -70,12 +64,12 @@ old_macdonald('macdonald') --> MacDonald
 
 
 def old_macdonald(name):
-    return name[:3].capitalize() + name[3:].capitalize()
+    return None
 
 
-# print(old_macdonald('macdonald'))
-# print(old_macdonald('macarthur'))
-
+if print_results:
+    print(old_macdonald('macdonald'))
+    print(old_macdonald('macarthur'))
 
 """
 MASTER YODA: Given a sentence, return a sentence with the words reversed
@@ -86,13 +80,12 @@ master_yoda('We are ready') --> 'ready are We'
 
 
 def master_yoda(text):
-    reversed_list = text.split()[::-1]
-    return ' '.join(reversed_list)
+    return None
 
 
-# print(master_yoda('I am home'))
-# print(master_yoda('We are ready'))
-
+if print_results:
+    print(master_yoda('I am home'))
+    print(master_yoda('We are ready'))
 
 """
 ALMOST THERE: Given an integer n, return True if n is within 10 of either 100 or 200
@@ -105,16 +98,14 @@ almost_there(209) --> True
 
 
 def almost_there(n):
-    distance_from_100 = abs(100 - n)
-    distance_from_200 = abs(200 - n)
-
-    return distance_from_100 <= 10 or distance_from_200 <= 10
+    return None
 
 
-# print(almost_there(90))
-# print(almost_there(104))
-# print(almost_there(150))
-# print(almost_there(209))
+if print_results:
+    print(almost_there(90))
+    print(almost_there(104))
+    print(almost_there(150))
+    print(almost_there(209))
 
 """
 FIND 33:
@@ -127,16 +118,13 @@ has_33([3, 1, 3]) → False
 
 
 def has_33(nums):
-    for index, num in enumerate(nums[1:]):
-        if num == 3 and nums[index] == 3:
-            return True
-    return False
+    return None
 
 
-# print(has_33([1, 3, 3]))
-# print(has_33([1, 3, 1, 3]))
-# print(has_33([3, 1, 3]))
-
+if print_results:
+    print(has_33([1, 3, 3]))
+    print(has_33([1, 3, 1, 3]))
+    print(has_33([3, 1, 3]))
 
 """
 PAPER DOLL: Given a string, return a string where for every character in the original there are three characters
@@ -147,15 +135,12 @@ paper_doll('Mississippi') --> 'MMMiiissssssiiippppppiii'
 
 
 def paper_doll(text):
-    result = ''
-    for char in text:
-        result += char * 3
-    return result
+    return None
 
 
-# print(paper_doll('Hello'))
-# print(paper_doll('Mississippi'))
-
+if print_results:
+    print(paper_doll('Hello'))
+    print(paper_doll('Mississippi'))
 
 """
 BLACKJACK: Given three integers between 1 and 11, if their sum is less than or equal to 21, return their sum.
@@ -169,20 +154,13 @@ blackjack(9,9,11) --> 19
 
 
 def blackjack(a, b, c):
-    total = a + b + c
-    if total < 21:
-        return total
-    if a == 11 or b == 11 or c == 11:
-        total -= 10
-    if total > 21:
-        return 'BUST'
-    return total
+    return None
 
 
-# print(blackjack(5, 6, 7))
-# print(blackjack(9, 9, 9))
-# print(blackjack(9, 9, 11))
-
+if print_results:
+    print(blackjack(5, 6, 7))
+    print(blackjack(9, 9, 9))
+    print(blackjack(9, 9, 11))
 
 """
 SUMMER OF '69: Return the sum of the list of numbers, except ignore sections of numbers starting with a 6 
@@ -195,18 +173,10 @@ summer_69([2, 1, 6, 9, 11]) --> 14
 
 
 def summer_69(arr):
-    six_flag = False
-    total = 0
-    for num in arr:
-        if num == 6:
-            six_flag = True
-        if not six_flag:
-            total += num
-        if num == 9:
-            six_flag = False
-    return total
+    return None
 
 
-print(summer_69([1, 3, 5]))
-print(summer_69([4, 5, 6, 7, 8, 9]))
-print(summer_69([2, 1, 6, 9, 11]))
+if print_results:
+    print(summer_69([1, 3, 5]))
+    print(summer_69([4, 5, 6, 7, 8, 9]))
+    print(summer_69([2, 1, 6, 9, 11]))
