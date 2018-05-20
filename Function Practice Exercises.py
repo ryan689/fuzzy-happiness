@@ -1,3 +1,6 @@
+from math import sqrt
+from math import ceil
+
 """
 WARMUP
 LESSER OF TWO EVENS: Write a function that returns the lesser of two given numbers if both numbers are even,
@@ -170,7 +173,7 @@ blackjack(9,9,11) --> 19
 
 def blackjack(a, b, c):
     total = a + b + c
-    if total < 21:
+    if total <= 21:
         return total
     if a == 11 or b == 11 or c == 11:
         total -= 10
@@ -195,18 +198,64 @@ summer_69([2, 1, 6, 9, 11]) --> 14
 
 
 def summer_69(arr):
-    six_flag = False
+    add = True
     total = 0
     for num in arr:
         if num == 6:
-            six_flag = True
-        if not six_flag:
+            add = False
+        if add:
             total += num
         if num == 9:
-            six_flag = False
+            add = True
     return total
 
 
-print(summer_69([1, 3, 5]))
-print(summer_69([4, 5, 6, 7, 8, 9]))
-print(summer_69([2, 1, 6, 9, 11]))
+# print(summer_69([1, 3, 5]))
+# print(summer_69([4, 5, 6, 7, 8, 9]))
+# print(summer_69([2, 1, 6, 9, 11]))
+
+
+"""
+SPY GAME: Write a function that takes in a list of integers and returns True if it contains 007 in order
+ spy_game([1,2,4,0,0,7,5]) --> True
+ spy_game([1,0,2,4,0,5,7]) --> True
+ spy_game([1,7,2,0,4,5,0]) --> False
+"""
+
+
+def spy_game(nums):
+    code = [0, 0, 7]
+
+    for num in nums:
+        if num == code[0]:
+            code.pop(0)
+            if not code:
+                return True
+
+    return False
+
+
+print(spy_game([1, 2, 4, 0, 0, 7, 5]))
+print(spy_game([1, 0, 2, 4, 0, 5, 7]))
+print(spy_game([1, 7, 2, 0, 4, 5, 0]))
+
+"""
+COUNT PRIMES: Write a function that returns the number of prime numbers that exist up to and including a given number
+count_primes(100) --> 25
+"""
+
+
+def count_primes(num):
+    prime_count = 0
+    if num >= 2:
+        prime_count = 1
+    for a in range(3, num):
+        for number in range(2, ceil(sqrt(a)) + 1):
+            if a % number == 0:
+                break
+        else:
+            prime_count += 1
+
+    return prime_count
+
+# print(count_primes(100000))
