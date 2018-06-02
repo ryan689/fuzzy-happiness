@@ -1,333 +1,181 @@
-import random
+from Deck import Deck
+from Player import Player
 
 
-class Card(object):
-
-    def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
-
-    def value(self):
-        """
-        :return: value of the card in the game of Blackjack
-        """
-        if self.rank == 'Ace':
-            return 11
-        elif self.rank == 'King' or self.rank == 'Queen' or self.rank == 'Jack':
-            return 10
+def get_player_names():
+    print("Enter each player's name, or 'end' to stop entering names")
+    names = []
+    while True:
+        name = input(f"Player {len(names) + 1}'s name: ")
+        if name.isalpha():
+            if name.lower() == 'end':
+                break
+            else:
+                names.append(name.split()[0].capitalize())
         else:
-            return self.rank
-
-    def __str__(self):
-        return '{} of {}'.format(self.rank, self.suit)
+            print('Please do not use numbers or spaces for the name.\n')
+    return names
 
 
-class Deck(object):
-
-    def __init__(self):
-        # fill deck with 52 cards
-        self.deck = []
-
-        # Clubs
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Clubs'))
-
-        self.deck.append(Card('Jack', 'Clubs'))
-        self.deck.append(Card('Queen', 'Clubs'))
-        self.deck.append(Card('King', 'Clubs'))
-        self.deck.append(Card('Ace', 'Clubs'))
-
-        # Diamonds
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Diamonds'))
-
-        self.deck.append(Card('Jack', 'Diamonds'))
-        self.deck.append(Card('Queen', 'Diamonds'))
-        self.deck.append(Card('King', 'Diamonds'))
-        self.deck.append(Card('Ace', 'Diamonds'))
-
-        # Hearts
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Hearts'))
-
-        self.deck.append(Card('Jack', 'Hearts'))
-        self.deck.append(Card('Queen', 'Hearts'))
-        self.deck.append(Card('King', 'Hearts'))
-        self.deck.append(Card('Ace', 'Hearts'))
-
-        # Spades
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Spades'))
-
-        self.deck.append(Card('Jack', 'Spades'))
-        self.deck.append(Card('Queen', 'Spades'))
-        self.deck.append(Card('King', 'Spades'))
-        self.deck.append(Card('Ace', 'Spades'))
-
-    def shuffle(self):
-        """
-        Shuffles the cards in the deck
-        """
-        random.shuffle(self.deck)
-
-    def deal_card(self):
-        """
-        Deals top card of the deck
-        """
-        return self.deck.pop()
-
-    def __str__(self):
-        deck_string = '\n'
-        for card in self.deck:
-            deck_string += str(card) + '\n'
-
-        return deck_string
+def get_player_bankroll(name):
+    file = open('bankrolls.txt', 'r')
+    lines = file.readlines()
+    for line in lines:
+        name_from_file, chips = tuple(line.split())
+        if name == name_from_file:
+            file.close()
+            return 0, int(chips)
+    else:
+        return 1, 1000
 
 
-class PlayerHand(object):
-
-    def __init__(self, name, bet, split=False, surrendered=False):
-        self.name = name
-        self.bet = bet
-        self.hand = []
-        self.split = split
-        self.surrendered = surrendered
-
-    def add_card(self, card):
-        self.hand.append(card)
-
-    def remove_card(self, card_number):
-        if card_number < len(self.hand):
-            return self.hand.pop(card_number)
-
-    def hand_value(self):
-        total_hand_value = 0
-        aces = 0
-
-        # add up the values of the card in hand
-        for card in self.hand:
-            total_hand_value += card.value()
-            if card.rank == 'Ace':
-                aces += 1
-
-        # allow aces to be 1, instead of 11, if the hand value is over 21
-        for _ in range(aces):
-            if total_hand_value > 21:
-                total_hand_value -= 10
-
-        return total_hand_value
-
-    def is_busted(self):
-        return self.hand_value() > 21
-
-    def set_surrendered(self, surrendered):
-        self.surrendered = surrendered
-
-    def set_split(self, split):
-        self.split = split
-
-    def is_split(self):
-        """
-        :return: True if hand has resulted from a split, False if hand is original hand dealt
-        """
-        return self.split
-
-    def has_surrendered(self):
-        return self.surrendered
-
-    def has_blackjack(self):
-        if len(self.hand) != 2:
-            return False
+def get_bet(name, chips):
+    while True:
+        try:
+            bet = int(input(f'{name}, how much would you like to bet? '))
+        except ValueError:
+            print('Please enter a number\n')
         else:
-            return self.hand_value() == 21
+            if bet > chips:
+                print(f'This bet exceeds your current bankroll of {chips} chips. Please enter a lower bet.\n')
+            elif bet < 0:
+                print('You must bid at least 0 chips.')
+            else:
+                return bet
 
-    def __str__(self):
-        hand = "{}'s hand:\n------------\n".format(self.name)
-        for card in self.hand:
-            hand += str(card) + '\n'
 
-        return hand + '\n'
+def get_valid_moves(hand):
+    valid_moves = ['Hit', 'Stand', 'Double']
+    if hand.split_is_valid():
+        valid_moves.append('Split')
+    if hand.surrender_is_valid():
+        valid_moves.append('Surrender')
+    return valid_moves
+
+
+def get_player_move(valid_moves):
+    # ask for player's move (hit, stand, double, split, surrender)
+    while True:
+        for index, valid_move in enumerate(valid_moves):
+            print(f'{index+1} - {valid_move}')
+        try:
+            chosen_move_number = int(input()) - 1
+        except ValueError:
+            print('Please enter a valid move number')
+        else:
+            if chosen_move_number in range(len(valid_moves)):
+                return valid_moves[chosen_move_number]
+            else:
+                print('Please enter a valid move number')
 
 
 # welcome
 print('\nWelcome To Python Blackjack!\n')
-dealer_deck = Deck()
-dealer_deck.shuffle()
+deck = Deck()
+deck.shuffle()
 players = []
 
+# set up players
+names = get_player_names()
+for name in names:
+    players.append(Player(name))
 
-# get player's names
-print("Enter each player's name, or 'end' to stop entering names")
-player_names = []
-while True:
-    player_name = input("Player {}'s name: ".format(len(player_names) + 1))
-    if player_name.lower() == 'end':
-        break
-    else:
-        player_names.append(player_name)
-
-
-# open file to access bankroll for each player playing
-file = open('bankrolls.txt', 'r')
-lines = file.readlines()
-player_bankrolls = {}
-print()
-for name in player_names:
-    for line in lines:
-        bankroll_data = line.split()
-        # search for player's name in file
-        if name == bankroll_data[0]:
-            # read how many chips this player has
-            print('Welcome back, {}! Your previous bankroll of {} chips is loaded.'.format(name, bankroll_data[1]))
-            player_bankrolls[name] = int(bankroll_data[1])
-            break
-    else:
-        # initialize new player with 1000 chips
-        print('Hello, {}! You have been given 1000 chips to start. Good luck!'.format(name))
-        player_bankrolls[name] = 1000
-
-file.close()
-
+for player in players:
+    new, chips = get_player_bankroll(player.name)
+    player.chips = chips
+    if new:
+        print(f'Welcome {player.name}! Please accept these 1000 chips to begin.')
 
 # ask for bets
-print()
-while len(players) < len(player_names):
-    while True:
-        try:
-            bet = int(input('{}, how much would you like to bet? '.format(player_names[len(players)])))
-        except ValueError:
-            print('Please enter a number\n')
-        else:
-            if bet > player_bankrolls[player_names[len(players)]]:
-                print('This bet exceeds your current bankroll of {} chips. Please enter a lower bet.\n'.format
-                      (player_bankrolls[player_names[len(players)]]))
-            elif bet < 1:
-                print('You must bid at least 1 chip')
-            else:
-                player = PlayerHand(player_names[len(players)], bet)
-                players.append(player)
-                break
-
+for player in players:
+    player_bet = get_bet(player.name, player.chips)
+    player.set_bet(player_bet)
 
 # deal 2 cards to each player, including the dealer
 for _ in range(2):
     for player in players:
-        card = dealer_deck.deal_card()
-        player.add_card(card)
+        card = deck.deal_card()
+        player.hand.add_card(card)
 
-dealer_hand = PlayerHand('Dealer', 0)
+dealer = Player('Dealer')
 for _ in range(2):
-    card = dealer_deck.deal_card()
-    dealer_hand.add_card(card)
+    card = deck.deal_card()
+    dealer.hand.add_card(card)
 
 # check for blackjacks
-players_finished = []
-for index in range(len(players)):
-    current_player = players[index]
-    if current_player.has_blackjack() and not dealer_hand.has_blackjack():
-        print('{} has a blackjack! You win a 3:2 payout of {} chips.\n'.format
-              (current_player.name, int(current_player.bet * 1.5)))
-        players_finished.append(index)
+for player in players:
+    if player.has_blackjack() and not dealer_hand.has_blackjack():
+        print(f'{player.name} has a blackjack! You win a 3:2 payout of {player.bet * 1.5} chips.\n')
+        player.set_finished(True)
 
-if not dealer_hand.has_blackjack():
-    print("\nDealer's upcard:\n------------")
-    print(dealer_hand.hand[0])
-else:
-    print(dealer_hand)
+if dealer.has_blackjack():
+    print(dealer.hand)
     print('Dealer has blackjack!')
+else:
+    print('\nDealer\'s upcard:\n------------')
+    print(dealer.hand.cards[0] + '\n')
 
-if not dealer_hand.has_blackjack():
     # allow players to play their hands
-    print('\n')
-    for index in range(len(players)):
-        current_player = players[index]
+    all_finished = False
+    while not all_finished:
+        for player in players:
+            for hand in player.hands:
+                if not hand.finished:
+                    print(player.name + '\n' + player.hand)
+                    move = get_player_move(get_valid_moves(hand))
 
-    while len(players_finished) < len(players):
-        for index in range(len(players)):
-            if index not in players_finished:
-                current_player = players[index]
+                    if move == 'Hit':
+                        card = deck.deal_card()
+                        hand.add_card(card)
+                        print(hand)
 
-                # show player hand
-                print(current_player)
+                    elif move == 'Stand':
+                        hand.set_finished(True)
 
-                # determine which moves are valid
-                valid_moves = [(1, 'Hit'), (2, 'Stand'), (3, 'Double')]
-                if len(current_player.hand) == 2 and current_player.hand[0].value() == current_player.hand[1].value():
-                    valid_moves.append((len(valid_moves) + 1, 'Split'))
-                if len(current_player.hand) == 2 and not current_player.is_split():
-                    valid_moves.append((len(valid_moves) + 1, 'Surrender'))
-
-                # ask for player's move (hit, stand, double, split, surrender)
-                chosen_move = 0
-                while True:
-                    for valid_move in valid_moves:
-                        print('{} - {}'.format(valid_move[0], valid_move[1]))
-                    try:
-                        chosen_move = int(input(''))
-                    except ValueError:
-                        print('Please enter a valid move number')
-                    else:
-                        if chosen_move in [valid_move[0] for valid_move in valid_moves]:
-                            break
-                        else:
-                            print('Please enter a valid move number')
-
-                for valid_move in valid_moves:
-                    if valid_move[0] == chosen_move and valid_move[1] == 'Hit':
-                        # if player chose to be hit, then deal a card
-                        card = dealer_deck.deal_card()
-                        current_player.add_card(card)
-                        print(current_player)
-
-                    elif valid_move[0] == chosen_move and valid_move[1] == 'Stand':
-                        # player is finished taking cards
-                        players_finished.append(index)
-
-                    elif valid_move[0] == chosen_move and valid_move[1] == 'Double':
+                    elif move == 'Double':
                         # hit with one more card and double bet
-                        card = dealer_deck.deal_card()
-                        current_player.add_card(card)
-                        print('Doubling bet to {}...'.format(current_player.bet * 2))
-                        current_player.bet *= 2
-                        players_finished.append(index)
-                        print(current_player)
+                        card = deck.deal_card()
+                        hand.add_card(card)
+                        print(f'Doubling bet to {player.bet*2}...')
+                        player.bet *= 2
+                        hand.set_finished(True)
+                        print(hand)
 
-                    elif valid_move[0] == chosen_move and valid_move[1] == 'Split':
-                        if current_player:
-                            # create new player
-                            split_player = PlayerHand(current_player.name + ' - Hand 2', current_player.bet, True)
-                            current_player.set_split(True)
-                            current_player.name += ' - Hand 1'
+                    elif move == 'Split':
+                        print('Splitting hand')
+                        # create new hand
+                        new_hand = Hand(split=True)
+                        hand.set_split(True)
 
-                            # split cards between the two hands
-                            card = current_player.remove_card(0)
-                            split_player.add_card(card)
+                        # split cards between the two hands
+                        card = hand.remove_card(0)
+                        new_hand.add_card(card)
 
-                            # deal additional card to each hand
-                            card = dealer_deck.deal_card()
-                            current_player.add_card(card)
+                        # deal additional card to each hand
+                        hand.add_card(deck.deal_card())
+                        new_hand.add_card(deck.deal_card())
 
-                            card = dealer_deck.deal_card()
-                            split_player.add_card(card)
+                        # give new hand to player
+                        player.add_hand(new_hand)
 
-                            # add player
-                            players.append(split_player)
+                    elif move == 'Surrender':
+                        print(f'{player.name} has surrendered this hand. You lose half your original bet')
+                        hand.set_finished(True)
 
-                    elif valid_move[0] == chosen_move and valid_move[1] == 'Surrender':
-                        print('{} has surrendered. You lose half your original bet, '
-                              '{} chips'.format(current_player.name, int(current_player.bet * 0.5)))
-                        current_player.set_surrendered(True)
-                        players_finished.append(index)
+                    # check if hand busted
+                    if hand.is_busted():
+                        print(f'{player.name}, you have busted!')
+                        hand.set_finished(True)
 
-                # check if player busted
-                if current_player.is_busted():
-                    print('{}, you have busted!'.format(current_player.name))
-                    players_finished.append(index)
+        all_finished = True
+        for player in players:
+            if player.has_active_hand():
+                all_finished = False
 
     # resolve dealers hand
     all_players_busted = True
     for player in players:
-        if not player.is_busted():
+        if not player.has_nonbusted_hand():
             all_players_busted = False
             break
 
