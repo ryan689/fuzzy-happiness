@@ -10,7 +10,7 @@ class Card:
         """
         if self.rank == 'Ace':
             return 11
-        elif self.rank == 'King' or self.rank == 'Queen' or self.rank == 'Jack':
+        elif self.rank in ['King', 'Queen', 'Jack']:
             return 10
         else:
             return self.rank
