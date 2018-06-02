@@ -15,5 +15,8 @@ class Card:
         else:
             return self.rank
 
-    def __str__(self):
-        return f'{self.rank} of {self.suit}'
+    def __str__(self, face_up):
+        if face_up:
+            return f'{self.rank} of {self.suit}'
+        else:
+            return 'Face-down card'

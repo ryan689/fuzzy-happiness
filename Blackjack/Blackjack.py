@@ -1,5 +1,6 @@
 from Deck import Deck
 from Player import Player
+from Hand import Hand
 
 
 def get_player_names():
@@ -24,9 +25,10 @@ def get_player_bankroll(name):
         name_from_file, chips = tuple(line.split())
         if name == name_from_file:
             file.close()
-            return 0, int(chips)
+            return False, int(chips)
     else:
-        return 1, 1000
+        file.close()
+        return True, 1000
 
 
 def get_bet(name, chips):
@@ -53,7 +55,7 @@ def get_valid_moves(hand):
     return valid_moves
 
 
-def get_player_move(valid_moves):
+def get_player_move_from_valid_moves(valid_moves):
     # ask for player's move (hit, stand, double, split, surrender)
     while True:
         for index, valid_move in enumerate(valid_moves):
@@ -69,11 +71,21 @@ def get_player_move(valid_moves):
                 print('Please enter a valid move number')
 
 
+def add_2card_hand_to(player):
+    # deal 2 cards to the player
+    player_hand = Hand()
+    for _ in range(2):
+        card = deck.deal_card()
+        player_hand.add_card(card)
+    player.add_hand(player_hand)
+
+
 # welcome
 print('\nWelcome To Python Blackjack!\n')
 deck = Deck()
 deck.shuffle()
 players = []
+
 
 # set up players
 names = get_player_names()
@@ -81,39 +93,40 @@ for name in names:
     players.append(Player(name))
 
 for player in players:
-    new, chips = get_player_bankroll(player.name)
-    player.chips = chips
-    if new:
-        print(f'Welcome {player.name}! Please accept these 1000 chips to begin.')
+    new_player, player.chips = get_player_bankroll(player.name)
+    if new_player:
+        print(f'Welcome {player.name}! Please accept these 1000 chips to begin.\n')
+    else:
+        print(f'Welcome back, {player.name}! Your previous bankroll of {player.chips} chips has been loaded.\n')
+
 
 # ask for bets
 for player in players:
     player_bet = get_bet(player.name, player.chips)
     player.set_bet(player_bet)
 
-# deal 2 cards to each player, including the dealer
-for _ in range(2):
-    for player in players:
-        card = deck.deal_card()
-        player.hand.add_card(card)
-
+# deal 2 cards to each player, including dealer
+for player in players:
+    add_2card_hand_to(player)
 dealer = Player('Dealer')
-for _ in range(2):
-    card = deck.deal_card()
-    dealer.hand.add_card(card)
+add_2card_hand_to(dealer)
+
+for player in players:
+    print(player)
+print(dealer)
 
 # check for blackjacks
 for player in players:
-    if player.has_blackjack() and not dealer_hand.has_blackjack():
+    if player.has_blackjack() and not dealer.has_blackjack():
         print(f'{player.name} has a blackjack! You win a 3:2 payout of {player.bet * 1.5} chips.\n')
         player.set_finished(True)
+
 
 if dealer.has_blackjack():
     print(dealer.hand)
     print('Dealer has blackjack!')
 else:
-    print('\nDealer\'s upcard:\n------------')
-    print(dealer.hand.cards[0] + '\n')
+    print(dealer)
 
     # allow players to play their hands
     all_finished = False
@@ -122,7 +135,7 @@ else:
             for hand in player.hands:
                 if not hand.finished:
                     print(player.name + '\n' + player.hand)
-                    move = get_player_move(get_valid_moves(hand))
+                    move = get_player_move_from_valid_moves(get_valid_moves(hand))
 
                     if move == 'Hit':
                         card = deck.deal_card()
@@ -198,9 +211,9 @@ for player in players:
     if player.has_surrendered():
         print('\t{} surrendered, losing {} chips'.format(player.name, int(player.bet * 0.5)))
         bankroll_changes[player.name] = -int(player.bet * 0.5)
-    elif player.has_blackjack() and not dealer_hand.has_blackjack():
+    elif player.has_blackjack() and not dealer.has_blackjack():
         bankroll_changes[player.name] = int(1.5 * player.bet)
-    elif dealer_hand.has_blackjack() and not player.has_blackjack():
+    elif dealer.has_blackjack() and not player.has_blackjack():
         print('\tDealer has blackjack. You lose {} chips'.format(player.bet))
         bankroll_changes[player.name] = -player.bet
     elif player.is_busted():

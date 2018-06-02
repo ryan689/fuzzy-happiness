@@ -1,28 +1,12 @@
-from Hand import Hand
+from HandHolder import HandHolder
 
 
-class Player:
+class Player(HandHolder):
 
     def __init__(self, name):
-        self.name = name
+        super(Player, self).__init__(name)
         self.chips = 0
         self.bet = 0
-        self.hands = []
-
-    def add_hand(self, hand=Hand()):
-        self.hands.append(hand)
-
-    def has_active_hand(self):
-        for hand in self.hands:
-            if not hand.finished:
-                return True
-        return False
-
-    def has_nonbusted_hand(self):
-        for hand in self.hands:
-            if not hand.is_busted():
-                return True
-        return False
 
     def set_chips(self, chips):
         self.chips = chips
@@ -32,4 +16,8 @@ class Player:
             self.bet = bet
 
     def __str__(self):
-        return self.name
+        result = super(Player, self).__str__()
+        for index, hand in enumerate(self.hands):
+            result += 'Hand ' + str(index + 1) + ':\n' + hand.__str__(len(hand))
+
+        return result

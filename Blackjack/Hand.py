@@ -29,7 +29,7 @@ class Hand:
 
         return total_hand_value
 
-    def has_blackjack(self):
+    def is_blackjack(self):
         return len(self.cards) == 2 and self.hand_value() == 21
 
     def is_busted(self):
@@ -50,9 +50,13 @@ class Hand:
     def split_is_valid(self):
         return len(self.cards) == 2 and self.cards[0].value == self.cards[1].value
 
-    def __str__(self):
-        hand = f'{self.cards}\'s hand:\n------------\n'
+    def __str__(self, first_cards_face_up_count=0):
+        hand = ''
         for card in self.cards:
-            hand += str(card) + '\n'
+            hand += card.__str__(first_cards_face_up_count > 0) + '\n'
+            first_cards_face_up_count -= 1
 
-        return hand + '\n'
+        return hand
+
+    def __len__(self):
+        return len(self.cards)
