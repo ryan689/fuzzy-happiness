@@ -1,48 +1,20 @@
 from random import shuffle
 from Card import Card
+from itertools import product
 
 
-class Deck():
+class Deck:
 
     def __init__(self):
         # fill deck with 52 cards
         self.deck = []
 
-        # Clubs
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Clubs'))
+        ranks = list(range(2, 11))
+        ranks.extend(['Jack', 'Queen', 'King', 'Ace'])
+        suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
 
-        self.deck.append(Card('Jack', 'Clubs'))
-        self.deck.append(Card('Queen', 'Clubs'))
-        self.deck.append(Card('King', 'Clubs'))
-        self.deck.append(Card('Ace', 'Clubs'))
-
-        # Diamonds
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Diamonds'))
-
-        self.deck.append(Card('Jack', 'Diamonds'))
-        self.deck.append(Card('Queen', 'Diamonds'))
-        self.deck.append(Card('King', 'Diamonds'))
-        self.deck.append(Card('Ace', 'Diamonds'))
-
-        # Hearts
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Hearts'))
-
-        self.deck.append(Card('Jack', 'Hearts'))
-        self.deck.append(Card('Queen', 'Hearts'))
-        self.deck.append(Card('King', 'Hearts'))
-        self.deck.append(Card('Ace', 'Hearts'))
-
-        # Spades
-        for rank in range(2, 11):
-            self.deck.append(Card(rank, 'Spades'))
-
-        self.deck.append(Card('Jack', 'Spades'))
-        self.deck.append(Card('Queen', 'Spades'))
-        self.deck.append(Card('King', 'Spades'))
-        self.deck.append(Card('Ace', 'Spades'))
+        for rank, suit in product(ranks, suits):
+            self.deck.append(Card(rank, suit))
 
     def shuffle(self):
         """
