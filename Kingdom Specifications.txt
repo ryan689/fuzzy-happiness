@@ -1,0 +1,123 @@
+This is the Kingdom Specifications document. You may edit all the numbers 
+(after the colons) to specify different things about the kingdom that will
+be chosen.
+If an option has 0 next to it, then it is set to "off".
+If an option has 1 next to it, then it is set to "on".
+To specify an exact number of cards of a certain type, set the between x and x 
+numbers to the same number. (For example, setting the numbers to between 1 and 1 
+attacks will result in exactly 1 attack card being chosen.)
+
+Do not modify anything besides the numbers below.
+
+------------------------------------------------------------------
+0) Players: 3
+
+1) Speed Rating: 0
+        0----------1-------2--------3
+    disregard----slow----medium----fast
+
+2) Sort cards in kingdom by: 1
+      1-------2------3
+    cost----name----set
+
+Filters for individual cards:
+    Sets to choose from:
+        3) Castle: 1
+        4) Intrigue: 1
+        5) Seaside: 1
+        6) Alchemy: 1
+        7) Prosperity: 1
+        8) Cornucopia: 1
+        9) Hinterlands: 1
+        10) Dark_Ages: 1
+        11) Guilds: 1
+        12) Adventures: 1
+
+    Promotional Cards:
+        13) Black_Market: 1
+        14) Envoy: 1
+        15) Governor: 1
+        16) Prince: 1
+        17) Stash: 0
+        18) Walled_Village: 0
+
+Filters for whole kingdom:
+    19-20) Total number of cards from Castle: between 0 and 10
+    21-22) Total number of cards from Intrigue: between 0 and 10
+    23-24) Total number of cards from Seaside: between 0 and 10
+    25-26) Total number of cards from Alchemy: between 0 and 10
+    27-28) Total number of cards from Prosperity: between 0 and 10
+    29-30) Total number of cards from Cornucopia: between 0 and 10
+    31-32) Total number of cards from Hinterlands: between 0 and 10
+    33-34) Total number of cards from Dark_Ages: between 0 and 10
+    35-36) Total number of cards from Guilds: between 0 and 10
+    37-38) Total number of cards from Adventures: between 0 and 10
+
+    39-40) Total number of +cards in Kingdom: between 0 and 10
+    41-42) Total number of +actions in Kingdom: between 4 and 7
+       43) Require a +2 or more actions card: 0
+    44-45) Total number of +buys in Kingdom: between 1 and 2
+    46-47) Total number of +coins in Kingdom: between 2 and 10
+    48-49) Total number of attack cards in Kingdom: between 1 and 3
+       50) Require an appropriate reaction card for all attacks: 0
+    51-52) Total number of cards that let you trash other cards: between 0.5 and 1.9
+    53-54) Total number of duration cards in kingdom: between 0 and 2
+    55-56) Total number of treasure cards in kingdom: between 0 and 1
+    57-58) Total number of victory cards in kingdom: between 0 and 1
+    59-60) Total number of reserve cards in kingdom: between 0 and 3
+    61-62) Total number of event cards (Adventures) in kingdom: between 0 and 2
+
+    59-60) Total number of cards costing 1: between 0 and 1
+    61-62) Total number of cards costing 2: between 0 and 2
+    63-64) Total number of cards costing 3: between 0 and 4
+    65-66) Total number of cards costing 4: between 0 and 4
+    67-68) Total number of cards costing 5: between 0 and 4
+    69-70) Total number of cards costing 6: between 0 and 2
+    71-72) Total number of cards costing 7: between 0 and 1
+    73-74) Total number of potion-cost cards: between 0 and 10
+       75) Prevent having exactly one potion-cost card: 1
+
+    Random prevention of awkwardness:
+        76) Only allow Tunnel if it could reasonably be discarded: 1
+        77) Only allow Scout if there is at least one card that "goes well" with it: 1
+        78) Only allow cards with on-trash abilities if there is at least 1 trasher: 1
+        79) Only allow Beggar, Horse Traders, Lighthouse,
+            Moat, or Secret Chamber if there are attacks: 1
+        80) Only allow Contraband if there is no other source of +buy: 1
+        81) Only alow Rats if there is a trash-for-benefit card: 1
+        82) Only allow Feast or Altar if there are at least 3 cards costing 5: 1
+        83) Don't allow more than one of Messenger, Nomad Camp, and Woodcutter: 1
+        84) Don't allow Squire if there are no trashers or no attacks: 1
+        85) Don't allow more than one of Chapel, Loan, Moneylender, Spice Merchant: 1
+        86) Don’t allow more than one of Armory, Ironworks, Talisman, Workshop: 1
+        87) Don't allow more than one of Noble Brigand, Pirate Ship, Thief: 1
+        88) Don't allow both Expand and Remodel: 1
+        89) Don't allow both Count and Mandarin: 1
+        90) Don't allow more than one of Beggar, Horse Traders, 
+            Lighthouse, Moat, Secret Chamber: 1
+        91) Don't allow both Hunting Grounds and Smithy: 1
+        92) Don't allow Urchin if there are no other attacks: 1
+        93) Don't allow Quarry unless there are 3 or more
+            action cards costing 5 or more, including
+            1 that is 6 or more: 1
+        94) Only allow Nomad Camp or Woodcutter if there is no other source of +buy: 1
+        95) Only allow Market Square if there is at least one trasher or trashing attack: 1
+        96) Don't allow both Procession and Throne Room: 1
+        97) Don't allow both Mine and Taxman: 1
+        98) Only allow Conspirator if there are at least +4 actions: 1
+        99) Only allow Procession if there are other actions costing 3, 4, 5, and 6: 1
+        100) Don't allow multiple same cost cards that let you trash or return other cards: 0
+        101) Don't allow more than one hand size reducing attack card: 1
+        102) Don't allow multiple +2 action cards with similar cost: 1
+        103) Don't allow more than one of Oracle, Scrying Pool, Spy: 1
+        104) Don't allow more than one of Secret Chamber, Storeroom, Vault: 1
+        105) Don't allow more than one of Familiar, Mountebank,
+             Sea Hag, Witch, Young Witch: 1
+        106) Don't allow both Chancellor and Scavenger: 1
+        107) Don't allow both Hunting Party and Laboratory: 1
+        108) Only allow Band of Misfits if there are at least 4 actions costing 3 or 4: 1
+        109) Don't allow both Expand and Graverobber: 1
+        110) Only allow Prince if there are at least 3 actions costing 4: 1
+        111) Only allow University if there are at least 3 actions costing 5: 1
+        112) Don't allow both Develop and Poor_House: 1
+        113) Don't allow both Advisor and Envoy: 1
